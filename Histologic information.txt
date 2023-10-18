@@ -1,0 +1,93 @@
+https://www.pathologyoutlines.com/topic/ovarytumorwhoclassif.html
+
+Low Grade Serous Carcinoma:
+https://www.pathologyoutlines.com/topic/ovarytumorserouscarcinomalg.html
+Uniform / homogeneous population of small cells with scant cytoplasm
+Mild to moderate nuclear atypia at most (grade 1 or 2)
+No nuclear pleomorphism (< 3x variation in size) (Hum Pathol 2005;36:1049)
+May have a conspicuous nucleolus
+Low mitotic index: < 12 mitotic figures per 10 high power fields
+Little to no necrosis
+Psammoma bodies are frequent
+2 patterns, noninvasive and invasive:
+Noninvasive: nonhierarchical architecture with micropapillary or cribriform patterns with significant expansile growth
+Invasive (> 5 mm): micropapillary or complex papillae, compact cell nests, inverted macropapillae (with broad fibrovascular cores), cribriform, glandular or cystic, solid sheets with slit-like spaces and single cells
+Multiple different invasive patterns can exist within one tumor
+
+High Grade Serous Carcinoma:
+https://www.pathologyoutlines.com/topic/ovarytumorserouscarcinomahg.html
+Solid masses of columnar to cuboidal cells with eosinophilic cytoplasm and slit-like spaces (fusion of papillae)
+Solid, pseudoendometrioid, transitional cell carcinoma-like (SET) appearance (more common in BRCA1 mutations) (Mod Pathol 2012 Apr;25(4):625)
+Hierarchical papillary branching, glandular and cribriform patterns common
+Significant nuclear atypia
+Significant nuclear pleomorphism (> 3x variation in size) with large, bizarre and multinucleated forms (Hum Pathol 2005;36:1049)
+Prominent nucleolus, often large and eosinophilic
+High mitotic index: ≥ 12 mitotic figures per 10 high power fields, often atypical
+Necrosis is frequent
+Can have increased CD3+ or CD8+ tumor infiltrating lymphocytes (more common in BRCA1 mutation)
+Psammoma bodies are variable
+Serous tubal intraepithelial carcinoma (STIC) (90% fimbria, 10% ampulla / isthmus) exhibits similar histologic features; may be bilateral (10 - 20%) and multifocal
+Findings after neoadjuvant chemotherapy: single cells in a background of histiocytic reaction and fibrosis, clear cell change, decrease in mitotic figures, increased psammoma bodies
+
+
+Mucinous Carcinoma:
+https://www.pathologyoutlines.com/topic/ovarytumormucinouscarcinoma.html
+Stromal invasion; also more solid growth, atypia, stratification, papillae, loss of glandular architecture, necrosis (resembles colon carcinoma), greater complexity of glands than borderline tumors
+Stromal invasion may be infiltrative with disorderly penetration of stroma by neoplastic glands, single cells or cell clusters, may have desmoplastic response or expansile (confluent) with complex arrangement of glands, cysts or papillae lined by malignant epithelium with minimal or no intervening stroma with a broad, sharply defined border
+Glands are almost always intestinal type
+Endocervical type usually has other epithelial components (serous, endometrioid, squamous)
+Carcinoma often merges with borderline or benign mucinous tumors
+Rarely has signet ring cells, but differs from Krukenberg tumor (Am J Surg Pathol 2008;32:1373)
+
+
+Endometrioid Carcinoma:
+https://www.pathologyoutlines.com/topic/ovarytumorendometrioidcarcinoma.html
+Most common morphologic pattern is confluent (back to back) glands
+Stromal invasion is usually by expansion; rarely, destructive stromal invasion can be observed
+Squamous metaplasia (morules or keratin pearls), cytoplasmic mucin, intracytoplasmic vacuoles, oncocytic changes, clear cell changes and cilia and sex cord-like elements (sertoliform) can be observed; none of these morphologic features affect the histologic grade (Am J Surg Pathol 2007;31:1203)
+Endometriosis or adenofibroma may be present in the background
+Vascular invasion is rare
+Might be associated with serous, undifferentiated carcinoma and yolk sac tumor (mixed carcinoma) (Am J Surg Pathol 1994;18:687, Am J Surg Pathol 1996;20:1056)
+Morphologic features in favor of synchronous endometrial and ovarian tumors:
+Both tumors are low grade
+No myometrial invasion or less than 50% myometrial inivasion
+There is no involvement in any other anatomical sites
+No lymphovascular involvement in either tumor
+Background atypical endometrial hyperplasia in the endometrium
+Unilateral ovarian involvement and unifocal parenchymal distribution of tumor
+Lack of ovarian capsular, multifocal or hilar involvement
+Presence of endometriosis or adenofibroma in the ovary (Int J Gynecol Pathol 2019;38:S75)
+
+Clear Cell Carcinoma:
+https://www.pathologyoutlines.com/topic/ovarytumorclearcell.html
+3 classic growth patterns, frequently admixed but 1 pattern (usually papillary or tubulocystic) may predominate (Am J Surg Pathol 2011;35:36, Adv Anat Pathol 2012;19:296, Am J Surg Pathol 2016;40:656, Histopathology 2015;66:808):
+Papillary:
+Most frequent (70%)
+Usually small, round, simple, nonbranching papillae with fibrous / hyalinized, edematous / myxoid or empty (open tumor rings) stromal cores
+Lined by 1 - 2 layers of cuboidal, flattened or hobnail cells
+Micropapillary tufts may be seen
+Rarely irregular, broad papillae with or without hierarchical branching and micropapillae (Am J Surg Pathol 2008;32:269)
+Tubulocystic:
+Frequent (65%)
+Variably sized tubules and cysts, with or without intraluminal dense eosinophilic secretions and outpouchings
+Lined by a single layer of hobnail, cuboidal or flattened cells
+Often associated with an adenofibromatous background
+Solid:
+Least common (62%)
+Diffuse sheets or nested clusters of polyhedral cells separated by delicate septa exhibiting clear to eosinophilic cytoplasm
+General features:
+Low cuboidal, polyhedral, hobnail or flattened cells with uniform nuclear atypia, prominent nucleoli and variable mitotic activity (usually low at < 6 per 10 high power fields)
+Hobnail cells have hyperchromatic nuclei protruding into lumina of tubulocystic structures or lining papillae
+Focal nuclear pleomorphism may be present in 40%
+Eosinophilic hyaline globules (Am J Surg Pathol 2011;35:36, Adv Anat Pathol 2012;19:296)
+Nuclear pseudoinclusions
+Peritumoural or diffuse lymphoplasmacytic infiltrate may be present
+May be associated with clear cell adenofibroma, clear cell borderline tumor, endometriosis or endometrioid adenocarcinoma
+Not graded (high grade by definition)
+Oxyphilic variant of clear cell carcinoma is composed of tumor cells with variable amounts of clear to granular eosinophilic cytoplasm (oxyphil cells), especially in nested, solid or trabecular growths (Am J Surg Pathol 1987;11:661)
+Rare features:
+Multinucleated cells
+Psammoma bodies
+Diastase resistant intracytoplasmic material imparting a signet ring appearance (so called targetoid cells)
+Intraglandular cellular sloughing mimicking high grade serous carcinoma
+Uncommon growth patterns include glandular, nested, trabecular and reticular-like (myxoid stroma)
