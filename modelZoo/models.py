@@ -2,14 +2,20 @@ from torch import nn
 import torchinfo
 from torch import nn
 import torch
-
+import numpy as np
 
 
 class Res2DModel(nn.Module):
-    def __init__(self, outputLen, channels=3, name="Res2DModel", K=1, Dropout=0, HiddenDim=64):
+    def __init__(self, outputLen, inputDim=256, channels=3, name="Res2DModel", K=1, Dropout=0, HiddenDim=64, useGAP=False, useSoftmax=False):
         super().__init__()
         self.name = name
         self.K = K
+        self.useGAP = useGAP
+        if useGAP:
+            self.lin1Dim = K*32
+        else:
+            downsampledDim = inputDim//2//2//2//2//2
+            self.lin1Dim = K*32*downsampledDim*downsampledDim
 
         self.convStackK2 = nn.Sequential(nn.BatchNorm2d(channels),
                                         nn.LeakyReLU(),
@@ -68,15 +74,21 @@ class Res2DModel(nn.Module):
         self.gap = nn.AdaptiveAvgPool2d((1,1))
         
         #nn.Linear(K*16*8*8*depth, HIDDEN_DIM)
-        self.linearStack1 = nn.Sequential(nn.Linear(K*32*8*8, HiddenDim),
+        self.linearStack1 = nn.Sequential(nn.Linear(self.lin1Dim, HiddenDim),
                                           nn.LeakyReLU(),
                                           nn.Dropout(Dropout))
 
-        self.classifier = nn.Sequential(nn.Linear(HiddenDim,HiddenDim),
-                                        nn.LeakyReLU(),
-                                        nn.Dropout(Dropout),
-                                        nn.Linear(HiddenDim,outputLen),
-                                        nn.Softmax(dim=1))
+        if useSoftmax:
+            self.classifier = nn.Sequential(nn.Linear(HiddenDim,HiddenDim),
+                                            nn.LeakyReLU(),
+                                            nn.Dropout(Dropout),
+                                            nn.Linear(HiddenDim,outputLen),
+                                            nn.Softmax(dim=1))
+        else:
+            self.classifier = nn.Sequential(nn.Linear(HiddenDim,HiddenDim),
+                                            nn.LeakyReLU(),
+                                            nn.Dropout(Dropout),
+                                            nn.Linear(HiddenDim,outputLen))
     def forward(self, x):
         x2 = self.convStackK2(x)
         x2_2 = self.convStackK2_1(x2)
@@ -104,11 +116,112 @@ class Res2DModel(nn.Module):
         x32 = self.convStackK32_2(concat32)
         x32Out = self.convStackK32_3(x32)
       
-        # x = self.gap(x32Out)
+        if self.useGAP:
+            x = self.gap(x32Out)
+            x = torch.flatten(x, start_dim=1)
+        else:
+            x = torch.flatten(x32Out, start_dim=1)
          
-        x = torch.flatten(x32Out, start_dim=1)
         x = self.linearStack1(x)
         out = self.classifier(x)
 
         return out
     
+
+
+
+class convBlockResDown(torch.nn.Module):
+    def __init__(self, chIn, chOut, kernelSize=3):
+        super().__init__()
+        self.padding = int(np.floor(kernelSize/2))
+        
+        self.act = torch.nn.LeakyReLU()
+
+        self.bn1 = torch.nn.BatchNorm2d(chIn)
+        self.bnRes = torch.nn.BatchNorm2d(chIn)
+        self.conv1 = torch.nn.Conv2d(chIn, chIn, kernelSize, padding="same")
+        self.bn2 = torch.nn.BatchNorm2d(chIn)
+        self.conv2 = torch.nn.Conv2d(chIn, chOut, kernelSize, stride=(2,2), padding=self.padding)
+        self.convRes = torch.nn.Conv2d(chIn, chOut, kernelSize, stride=(2,2), padding=self.padding)
+        self.convKernel1 = torch.nn.Conv2d(chOut, chOut, 1, padding="same")
+        self.bn3 = torch.nn.BatchNorm2d(chOut)
+        self.conv3 = torch.nn.Conv2d(chOut, chOut, kernelSize, padding="same")
+        self.bn4 = torch.nn.BatchNorm2d(chOut)
+        self.conv4 = torch.nn.Conv2d(chOut, chOut, kernelSize, padding="same")
+    
+    def forward(self, xIn):
+        x = self.bn1(xIn)
+        x = self.act(x)
+        x = self.conv1(x)
+
+        xRes = self.bnRes(xIn)
+        xRes = self.act(xRes)
+        xRes = self.convRes(xRes)
+        xRes = self.convKernel1(xRes)
+
+        x = self.bn2(x)
+        x = self.act(x)
+        x = self.conv2(x)
+        x = self.bn3(x)
+        x = self.act(x)
+        x = self.conv3(x)
+        x = self.bn4(x)
+        x = self.act(x)
+        x = self.conv4(x)
+        return x+xRes
+    
+
+
+class ResNet2DModel(nn.Module):
+    def __init__(self, outputLen, inputDim=256, channels=3, name="Res2DModel", K=1, Dropout=0, HiddenDim=64, useGAP=False, useSoftmax=False):
+        super().__init__()
+        self.name = name
+        self.K = K
+        self.useGAP = useGAP
+        if useGAP:
+            self.lin1Dim = K*32
+        else:
+            downsampledDim = inputDim//2//2//2//2//2
+            self.lin1Dim = K*32*downsampledDim*downsampledDim
+
+        self.down2 = convBlockResDown(channels,K*2)
+        self.down4 = convBlockResDown(K*2,K*4)
+        self.down8 = convBlockResDown(K*4,K*8)
+        self.down16 = convBlockResDown(K*8,K*16)
+        self.down32 = convBlockResDown(K*16,K*32)
+
+        self.gap = nn.AdaptiveAvgPool2d((1,1))
+        
+        #nn.Linear(K*16*8*8*depth, HIDDEN_DIM)
+        self.linearStack1 = nn.Sequential(nn.Linear(self.lin1Dim, HiddenDim),
+                                          nn.LeakyReLU(),
+                                          nn.Dropout(Dropout))
+
+        if useSoftmax:
+            self.classifier = nn.Sequential(nn.Linear(HiddenDim,HiddenDim),
+                                            nn.LeakyReLU(),
+                                            nn.Dropout(Dropout),
+                                            nn.Linear(HiddenDim,outputLen),
+                                            nn.Softmax(dim=1))
+        else:
+            self.classifier = nn.Sequential(nn.Linear(HiddenDim,HiddenDim),
+                                            nn.LeakyReLU(),
+                                            nn.Dropout(Dropout),
+                                            nn.Linear(HiddenDim,outputLen))
+    def forward(self, x):
+        xDown2 = self.down2(x)
+        xDown4 = self.down4(xDown2)
+        xDown8 = self.down8(xDown4)
+        xDown16 = self.down16(xDown8)
+        xDown32 = self.down32(xDown16)
+      
+        if self.useGAP:
+            x = self.gap(xDown32)
+            x = torch.flatten(x, start_dim=1)
+        else:
+            x = torch.flatten(xDown32, start_dim=1)
+         
+        x = self.linearStack1(x)
+        out = self.classifier(x)
+
+        return out
