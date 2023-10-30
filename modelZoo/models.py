@@ -14,7 +14,7 @@ class Res2DModel(nn.Module):
         if useGAP:
             self.lin1Dim = K*32
         else:
-            downsampledDim = inputDim//2//2//2//2//2
+            downsampledDim = int(np.round(inputDim/2**5))
             self.lin1Dim = K*32*downsampledDim*downsampledDim
 
         self.convStackK2 = nn.Sequential(nn.BatchNorm2d(channels),
@@ -131,11 +131,13 @@ class Res2DModel(nn.Module):
 
 
 class convBlockResDown(torch.nn.Module):
-    def __init__(self, chIn, chOut, kernelSize=3):
+    def __init__(self, chIn, chOut, kernelSize=3, dropout=0.0):
         super().__init__()
         self.padding = int(np.floor(kernelSize/2))
         
         self.act = torch.nn.LeakyReLU()
+
+        self.dropout = torch.nn.Dropout2d(dropout)
 
         self.bn1 = torch.nn.BatchNorm2d(chIn)
         self.bnRes = torch.nn.BatchNorm2d(chIn)
@@ -153,6 +155,7 @@ class convBlockResDown(torch.nn.Module):
         x = self.bn1(xIn)
         x = self.act(x)
         x = self.conv1(x)
+        x = self.dropout(x)
 
         xRes = self.bnRes(xIn)
         xRes = self.act(xRes)
@@ -168,12 +171,13 @@ class convBlockResDown(torch.nn.Module):
         x = self.bn4(x)
         x = self.act(x)
         x = self.conv4(x)
+        x = self.dropout(x)
         return x+xRes
     
 
 
 class ResNet2DModel(nn.Module):
-    def __init__(self, outputLen, inputDim=256, channels=3, name="Res2DModel", K=1, Dropout=0, HiddenDim=64, useGAP=False, useSoftmax=False):
+    def __init__(self, outputLen, inputDim=256, channels=3, name="Res2DModel", K=1, Dropout=0.0, HiddenDim=64, useGAP=False, useSoftmax=False):
         super().__init__()
         self.name = name
         self.K = K
@@ -181,14 +185,14 @@ class ResNet2DModel(nn.Module):
         if useGAP:
             self.lin1Dim = K*32
         else:
-            downsampledDim = inputDim//2//2//2//2//2
+            downsampledDim = int(np.round(inputDim/2**5))
             self.lin1Dim = K*32*downsampledDim*downsampledDim
 
-        self.down2 = convBlockResDown(channels,K*2)
-        self.down4 = convBlockResDown(K*2,K*4)
-        self.down8 = convBlockResDown(K*4,K*8)
-        self.down16 = convBlockResDown(K*8,K*16)
-        self.down32 = convBlockResDown(K*16,K*32)
+        self.down2 = convBlockResDown(channels,K*2, dropout=Dropout)
+        self.down4 = convBlockResDown(K*2,K*4, dropout=Dropout)
+        self.down8 = convBlockResDown(K*4,K*8, dropout=Dropout)
+        self.down16 = convBlockResDown(K*8,K*16, dropout=Dropout)
+        self.down32 = convBlockResDown(K*16,K*32, dropout=Dropout)
 
         self.gap = nn.AdaptiveAvgPool2d((1,1))
         

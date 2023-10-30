@@ -163,6 +163,7 @@ cython_debug/
 *.code-workspace
 
 logs/
+logs_colorectal/
 
 *.pt
 *.pkl
