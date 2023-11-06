@@ -3,6 +3,7 @@ import torchinfo
 from torch import nn
 import torch
 import numpy as np
+import timm
 
 
 class Res2DModel(nn.Module):
@@ -224,6 +225,53 @@ class ResNet2DModel(nn.Module):
             x = torch.flatten(x, start_dim=1)
         else:
             x = torch.flatten(xDown32, start_dim=1)
+         
+        x = self.linearStack1(x)
+        out = self.classifier(x)
+
+        return out
+    
+
+class ResNet34(nn.Module):
+    def __init__(self, outputLen, inputDim=256, channels=3, name="Res2DModel", K=1, Dropout=0.0, HiddenDim=64, useGAP=False, useSoftmax=False):
+        super().__init__()
+        self.feature_extractor = timm.create_model('resnet34', features_only=True, pretrained=True, out_indices=[4])
+      
+        self.name = name
+        self.K = K
+        self.useGAP = useGAP
+        if useGAP:
+            self.lin1Dim = 512
+        else:
+            downsampledDim = int(np.round(inputDim/2**5))
+            self.lin1Dim = K*32*downsampledDim*downsampledDim
+
+        self.gap = nn.AdaptiveAvgPool2d((1,1))
+        
+        #nn.Linear(K*16*8*8*depth, HIDDEN_DIM)
+        self.linearStack1 = nn.Sequential(nn.Linear(self.lin1Dim, HiddenDim),
+                                          nn.LeakyReLU(),
+                                          nn.Dropout(Dropout))
+
+        if useSoftmax:
+            self.classifier = nn.Sequential(nn.Linear(HiddenDim,HiddenDim),
+                                            nn.LeakyReLU(),
+                                            nn.Dropout(Dropout),
+                                            nn.Linear(HiddenDim,outputLen),
+                                            nn.Softmax(dim=1))
+        else:
+            self.classifier = nn.Sequential(nn.Linear(HiddenDim,HiddenDim),
+                                            nn.LeakyReLU(),
+                                            nn.Dropout(Dropout),
+                                            nn.Linear(HiddenDim,outputLen))
+    def forward(self, x):
+        features = self.feature_extractor(x)
+
+        if self.useGAP:
+            x = self.gap(features[0])
+            x = torch.flatten(x, start_dim=1)
+        else:
+            x = torch.flatten(features[0], start_dim=1)
          
         x = self.linearStack1(x)
         out = self.classifier(x)
