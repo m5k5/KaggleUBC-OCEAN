@@ -164,6 +164,7 @@ cython_debug/
 
 logs/
 logs_colorectal/
+logsConv2D/
 
 *.pt
 *.pkl
