@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository implements an end-to-end Deep Learning pipeline for Digital Pathology, specifically targeting the UBC-OCEAN challenge: classifying ovarian tumors from histology slides. The project bridges Medical Physics (imaging physics, WSI handling), Machine Learning (CNNs, Multi-Instance Learning), and Software Engineering (full deployment stack).
+This repository implements an end-to-end Deep Learning pipeline for Digital Pathology, specifically targeting the UBC-OCEAN challenge: classifying ovarian tumors from histology slides. The project bridges Medical Physics (imaging physics, WSI handling), Machine Learning (CNNs, Multi-Instance Learning), and Software Engineering.
 
 ## Methodology & Architecture
 
